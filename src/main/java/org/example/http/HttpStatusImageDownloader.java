@@ -8,40 +8,23 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class HttpStatusImageDownloader {
-    private int counterForFile = 0;
-    public void downloadStatusImage(int code){
-        File pathToImg = new File("src/main/resources/imgWithHttpStatusCode"+String.valueOf(code)+".jpg");
-        HttpStatusChecker statusChecker = new HttpStatusChecker();
+    public void downloadStatusImage(int code) {
 
+        File pathToImg = new File("src/main/resources/imgWithHttpStatusCode" + code + ".jpg");
 
-        FileOutputStream fos = null;
-        BufferedInputStream in = null;
-        try{
-            in = new BufferedInputStream(new URL(statusChecker.getStatusImage(code)).openStream());
-            fos = new FileOutputStream(pathToImg);
+        try (BufferedInputStream in = new BufferedInputStream(new URL(new HttpStatusChecker().getStatusImage(code)).openStream());
+             FileOutputStream fos = new FileOutputStream(pathToImg)) {
+
             byte[] data = new byte[1024];
             int count;
-            while((count = in.read(data,0,1024)) != -1){
-                fos.write(data,0,count);
-                fos.flush();
+            while ((count = in.read(data, 0, 1024)) != -1) {
+                fos.write(data, 0, count);
             }
-        }catch (MalformedURLException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }finally {
-            counterForFile++;
-            try{
-                in.close();
-            }catch (IOException e) {
-                throw new RuntimeException(e);
-            }finally {
-                try{
-                    fos.close();
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
+
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Malformed URL: " + e.getMessage(), e);
+        } catch (IOException e) {
+            throw new RuntimeException("Error downloading image: " + e.getMessage(), e);
         }
     }
 }

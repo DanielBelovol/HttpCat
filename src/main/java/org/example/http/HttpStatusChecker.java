@@ -2,7 +2,7 @@ package org.example.http;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.http.HttpConnectTimeoutException;
+
 
 public class HttpStatusChecker {
     private static final String URL_CAT = "https://http.cat/";
@@ -11,7 +11,7 @@ public class HttpStatusChecker {
         int responseCode;
         try {
 
-            URL url = new URL(URL_CAT + String.valueOf(code));
+            URL url = new URL(URL_CAT + code);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("HEAD");
             responseCode = connection.getResponseCode();
@@ -19,8 +19,8 @@ public class HttpStatusChecker {
         } catch (Exception e) {
             return null;
         }
-        if(!(responseCode ==HttpURLConnection.HTTP_NOT_FOUND)){
-            return URL_CAT+String.valueOf(code);
+        if(responseCode == HttpURLConnection.HTTP_OK){
+            return URL_CAT+code;
         }
         return null;
     }
