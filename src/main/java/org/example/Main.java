@@ -7,7 +7,5 @@ public class Main {
         HttpImageStatusCli cli = new HttpImageStatusCli();
 
         cli.askStatus();
-
-
     }
 }

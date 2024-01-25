@@ -23,7 +23,7 @@ public class HttpStatusImageDownloader {
 
         } catch (MalformedURLException e) {
             throw new RuntimeException("Malformed URL: " + e.getMessage(), e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Error downloading image: " + e.getMessage(), e);
         }
     }
